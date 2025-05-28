@@ -1,5 +1,7 @@
 package com.example.Kirana_Register.services;
 
+import com.example.Kirana_Register.Exceptions.DatabaseValidationException;
+import com.example.Kirana_Register.Exceptions.ResourceNotFoundException;
 import com.example.Kirana_Register.dto.CurrencyDTO;
 import com.example.Kirana_Register.dto.ExchangeApiDTO;
 import com.example.Kirana_Register.dto.TransactionDTO;
@@ -9,6 +11,10 @@ import com.example.Kirana_Register.entities.Users;
 import com.example.Kirana_Register.repositories.TransactionRepository;
 import com.example.Kirana_Register.repositories.UserRepository;
 import com.example.Kirana_Register.security.CustomUserDetails;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +36,20 @@ public class TransactionService {
     }
 
     public TransactionDTO createTransaction(TransactionDTO transactionDTO) {
-        // Get the authenticated user
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (transactionDTO == null) {
+            throw new IllegalArgumentException("Transaction request cannot be null");
+        }
+
+        // Validate authentication
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
+            throw new AuthenticationServiceException("User not authenticated");
+        }
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        // Fetch user
         Users user = userRepository.findById(userDetails.getUser().getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userDetails.getUser().getId()));
 
         Transaction transaction = new Transaction();
         transaction.setAmount(transactionDTO.getAmount());
@@ -47,24 +63,31 @@ public class TransactionService {
         transaction.setAmountInr(currencyDTO.getAmountInr());
         transaction.setAmountUsd(currencyDTO.getAmountUsd());
 
+        try {
+            Transaction savedTransaction = transactionRepository.save(transaction);
 
-        Transaction savedTransaction = transactionRepository.save(transaction);
+            TransactionDTO responseDTO = new TransactionDTO();
+            responseDTO.setId(savedTransaction.getId());
+            responseDTO.setAmount(savedTransaction.getAmount());
+            responseDTO.setTransactionDate(savedTransaction.getTransactionDate());
+            responseDTO.setUserId(savedTransaction.getUser().getId());
+            responseDTO.setType(savedTransaction.getType());
+            responseDTO.setCurrency(savedTransaction.getCurrency());
+            responseDTO.setAmountInr(currencyDTO.getAmountInr());
+            responseDTO.setAmountUsd(currencyDTO.getAmountUsd());
 
-        TransactionDTO responseDTO = new TransactionDTO();
-        responseDTO.setId(savedTransaction.getId());
-        responseDTO.setAmount(savedTransaction.getAmount());
-        responseDTO.setTransactionDate(savedTransaction.getTransactionDate());
-        responseDTO.setUserId(savedTransaction.getUser().getId());
-        responseDTO.setType(savedTransaction.getType());
-        responseDTO.setCurrency(savedTransaction.getCurrency());
-        responseDTO.setAmountInr(currencyDTO.getAmountInr());
-        responseDTO.setAmountUsd(currencyDTO.getAmountUsd());
-
-        return responseDTO;
+            return responseDTO;
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseValidationException("Invalid transaction data: constraint violation");
+        }
     }
 
     public List<TransactionDTO> getUserTransactions() {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
+            throw new AuthenticationServiceException("User not authenticated");
+        }
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Long userId = userDetails.getUser().getId();
 
         return transactionRepository.findByUserId(userId).stream().map(transaction -> {
@@ -78,8 +101,14 @@ public class TransactionService {
     }
 
     public CurrencyDTO convert(BigDecimal amount, Currency currency) {
+        if (amount == null || currency == null) {
+            throw new IllegalArgumentException("Amount and currency cannot be null");
+        }
         ExchangeApiDTO response = currencyConversionService.getExchangeRates();
         Double factor = response.getInrRate();
+        if (factor == null) {
+            throw new ResourceNotFoundException("INR exchange rate not available");
+        }
         BigDecimal amountUsd = null, amountInr = null;
         if ("USD".equalsIgnoreCase(currency.name())) {
             amountUsd = amount;
@@ -87,6 +116,8 @@ public class TransactionService {
         } else if ("INR".equalsIgnoreCase(currency.name())) {
             amountInr = amount;
             amountUsd = amount.divide(BigDecimal.valueOf(factor), 2, RoundingMode.HALF_UP);
+        } else {
+            throw new IllegalArgumentException("Unsupported currency: " + currency);
         }
         CurrencyDTO currencyDTO = new CurrencyDTO(amountUsd, amountInr);
         return currencyDTO;

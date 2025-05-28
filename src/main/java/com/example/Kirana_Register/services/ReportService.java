@@ -39,6 +39,9 @@ public class ReportService {
     }
 
     private Map<String, Object> generateReport(LocalDateTime start, LocalDateTime end, String reportType) {
+        if (start == null || end == null || start.isAfter(end)) {
+            throw new IllegalArgumentException("Invalid date range: start and end dates must be non-null and start must be before end");
+        }
         List<Transaction> records = transactionRepository.findByTransactionDateBetween(start, end);
 
         BigDecimal totalCreditUsd = BigDecimal.ZERO;

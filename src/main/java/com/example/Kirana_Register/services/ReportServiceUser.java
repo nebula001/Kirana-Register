@@ -47,6 +47,12 @@ public class ReportServiceUser {
     }
 
     private Map<String, Object> generateReport(Long userId, LocalDateTime start, LocalDateTime end, String reportType) {
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
+        }
+        if (start == null || end == null || start.isAfter(end)) {
+            throw new IllegalArgumentException("Invalid date range: start and end dates must be non-null and start must be before end");
+        }
         List<Transaction> records = transactionRepository.findByUser_IdAndTransactionDateBetween(userId, start, end);
 
         BigDecimal totalCreditUsd = BigDecimal.ZERO;

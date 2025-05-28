@@ -22,25 +22,25 @@ public class AuthService {
     }
 
     public LoginResponseDTO login(LoginRequestDTO requestDTO) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            requestDTO.getEmail(),
-                            requestDTO.getPassword()
-                    )
-            );
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-            String jwt = jwtTokenProvider.generateToken(userDetails);
-
-            LoginResponseDTO responseDTO = new LoginResponseDTO();
-            responseDTO.setMessage("Login successful");
-            responseDTO.setToken(jwt);
-            return responseDTO;
-        } catch (Exception e) {
-            throw new RuntimeException("Invalid email or password");
+        if (requestDTO == null) {
+            throw new IllegalArgumentException("Login request cannot be null");
         }
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        requestDTO.getEmail(),
+                        requestDTO.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String jwt = jwtTokenProvider.generateToken(userDetails);
+
+        LoginResponseDTO responseDTO = new LoginResponseDTO();
+        responseDTO.setMessage("Login successful");
+        responseDTO.setToken(jwt);
+        return responseDTO;
+
     }
 
     public String logout() {
