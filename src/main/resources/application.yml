@@ -1,0 +1,37 @@
+#spring.application.name=Kirana-Register
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/Kirana
+    username: postgres
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  application:
+    name: Kirana-Register
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: report-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.example.kafkaspringboot.model
+
+jwt:
+  secret: 4d87c5054b4c8eadee85bbe548fb9ba1f586f3fee2bf7189d68e17f7514002f2b8ed8fda90c626a2da0a5940173a92900efd32b2ed3d1d1693f9c55fa34769e2be16948e866c0ee2b01afb0d07cd253bb22c5e78f742867ba8ba74b6148e13cae1e0b49936896aa4cd6c5a8d05cc7c88faba24b1f4fbc89c23ecb656c0f1402a4e6d9768359b07eca1b06181db3adbab15844eea8ef88371de76dc0004dc90c82d7b36a1ba0fcf54d954dc03fa988fcff2f7e36d8759917b128e4862ed9d7690b5ea2db3393a03ee7eca306dd01edb095200613ed47fdcf389da1447d731d28c5b815c89cdeab79508caaa5579f870fc106dacb8c91d589ee2509227e3b57e88
+  expirationMs: 86400000
+
+kafka:
+  topics:
+    string-reports: string-reports-topic
+    json-reports: json-reports-topic
