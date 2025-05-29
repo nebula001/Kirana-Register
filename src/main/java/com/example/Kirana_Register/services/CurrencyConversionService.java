@@ -3,6 +3,7 @@ package com.example.Kirana_Register.services;
 import com.example.Kirana_Register.Exceptions.ExternalServiceException;
 import com.example.Kirana_Register.Exceptions.ResourceNotFoundException;
 import com.example.Kirana_Register.dto.ExchangeApiDTO;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,6 +17,7 @@ public class CurrencyConversionService {
         this.restTemplate = restTemplate;
     }
 
+    @Cacheable(value = "externalApiCache")
     public ExchangeApiDTO getExchangeRates() {
         try {
 

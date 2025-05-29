@@ -76,7 +76,7 @@ public class ReportServiceKafka {
 
         // String report
         String stringReport = String.format(
-                "Report Type: %s\nStart Date: %s\nEnd Date: %s\nTotal Credits: USD %s, INR %s\nTotal Debits: USD %s, INR %s\nNet Flow: USD %s, INR %s",
+                "Report Type: %s \n Start Date: %s \n End Date: %s \n Total Credits: USD %s, INR %s \n Total Debits: USD %s, INR %s \n Net Flow: USD %s, INR %s",
                 reportType, start, end, totalCreditUsd, totalCreditInr, totalDebitUsd, totalDebitInr, netFlowUsd, netFlowInr
         );
         stringKafkaTemplate.send(stringReportsTopic, UUID.randomUUID().toString(), stringReport);

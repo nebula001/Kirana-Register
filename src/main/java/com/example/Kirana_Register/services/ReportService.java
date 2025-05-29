@@ -1,47 +1,51 @@
 package com.example.Kirana_Register.services;
 
+import com.example.Kirana_Register.dto.ReportResponseDTO;
 import com.example.Kirana_Register.entities.Transaction;
 import com.example.Kirana_Register.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ReportService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public Map<String, Object> generateWeeklyReport() {
+    @Cacheable(value = "transactionReports", key = "'weeklyReportAdmin'")
+    public ReportResponseDTO generateWeeklyReport() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.minusWeeks(1);
 
         return generateReport(start, now, "weekly");
     }
 
-    public Map<String, Object> generateMonthlyReport() {
+    @Cacheable(value = "transactionReports", key = "'monthlyReportAdmin'")
+    public ReportResponseDTO generateMonthlyReport() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.with(TemporalAdjusters.firstDayOfMonth());
 
         return generateReport(start, now, "monthly");
     }
 
-    public Map<String, Object> generateYearlyReport() {
+    @Cacheable(value = "transactionReports", key = "'yearlyReportAdmin'")
+    public ReportResponseDTO generateYearlyReport() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.with(TemporalAdjusters.firstDayOfYear());
 
         return generateReport(start, now, "yearly");
     }
 
-    private Map<String, Object> generateReport(LocalDateTime start, LocalDateTime end, String reportType) {
+    private ReportResponseDTO generateReport(LocalDateTime start, LocalDateTime end, String reportType) {
         if (start == null || end == null || start.isAfter(end)) {
             throw new IllegalArgumentException("Invalid date range: start and end dates must be non-null and start must be before end");
         }
+
         List<Transaction> records = transactionRepository.findByTransactionDateBetween(start, end);
 
         BigDecimal totalCreditUsd = BigDecimal.ZERO;
@@ -62,14 +66,12 @@ public class ReportService {
         BigDecimal netFlowUsd = totalCreditUsd.subtract(totalDebitUsd);
         BigDecimal netFlowInr = totalCreditInr.subtract(totalDebitInr);
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("reportType", reportType);
-        result.put("totalCredits", Map.of("USD", totalCreditUsd, "INR", totalCreditInr));
-        result.put("totalDebits", Map.of("USD", totalDebitUsd, "INR", totalDebitInr));
-        result.put("netFlow", Map.of("USD", netFlowUsd, "INR", netFlowInr));
-        result.put("startDate", start);
-        result.put("endDate", end);
+        // Create DTO objects
+        ReportResponseDTO.CurrencyAmounts totalCredits = new ReportResponseDTO.CurrencyAmounts(totalCreditUsd, totalCreditInr);
+        ReportResponseDTO.CurrencyAmounts totalDebits = new ReportResponseDTO.CurrencyAmounts(totalDebitUsd, totalDebitInr);
+        ReportResponseDTO.CurrencyAmounts netFlow = new ReportResponseDTO.CurrencyAmounts(netFlowUsd, netFlowInr);
 
-        return result;
+        return new ReportResponseDTO(reportType, totalCredits, totalDebits, netFlow, start, end);
     }
 }
+

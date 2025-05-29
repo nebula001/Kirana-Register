@@ -11,6 +11,8 @@ import com.example.Kirana_Register.entities.Users;
 import com.example.Kirana_Register.repositories.TransactionRepository;
 import com.example.Kirana_Register.repositories.UserRepository;
 import com.example.Kirana_Register.security.CustomUserDetails;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
@@ -39,17 +41,20 @@ public class TransactionService {
         if (transactionDTO == null) {
             throw new IllegalArgumentException("Transaction request cannot be null");
         }
+        Long userId = extractUserId();
+        return createTransactionHelper(transactionDTO, userId);
+    }
 
-        // Validate authentication
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
-            throw new AuthenticationServiceException("User not authenticated");
-        }
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+    public List<TransactionDTO> getUserTransactions() {
+        Long userId = extractUserId();
+        return getUserTransactionsHelper(userId);
+    }
 
-        // Fetch user
-        Users user = userRepository.findById(userDetails.getUser().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userDetails.getUser().getId()));
+
+    @CacheEvict(value = "transactions", key = "#userId")
+    public TransactionDTO createTransactionHelper(TransactionDTO transactionDTO, Long userId) {
+        Users user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
 
         Transaction transaction = new Transaction();
         transaction.setAmount(transactionDTO.getAmount());
@@ -59,45 +64,31 @@ public class TransactionService {
         transaction.setTransactionDate(LocalDateTime.now());
 
         CurrencyDTO currencyDTO = convert(transactionDTO.getAmount(), transactionDTO.getCurrency());
-
         transaction.setAmountInr(currencyDTO.getAmountInr());
         transaction.setAmountUsd(currencyDTO.getAmountUsd());
 
         try {
             Transaction savedTransaction = transactionRepository.save(transaction);
-
-            TransactionDTO responseDTO = new TransactionDTO();
-            responseDTO.setId(savedTransaction.getId());
-            responseDTO.setAmount(savedTransaction.getAmount());
-            responseDTO.setTransactionDate(savedTransaction.getTransactionDate());
-            responseDTO.setUserId(savedTransaction.getUser().getId());
-            responseDTO.setType(savedTransaction.getType());
-            responseDTO.setCurrency(savedTransaction.getCurrency());
-            responseDTO.setAmountInr(currencyDTO.getAmountInr());
-            responseDTO.setAmountUsd(currencyDTO.getAmountUsd());
-
-            return responseDTO;
+            return mapToDTO(savedTransaction);
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseValidationException("Invalid transaction data: constraint violation");
         }
     }
 
-    public List<TransactionDTO> getUserTransactions() {
+    @Cacheable(value = "transactions", key = "#userId")
+    public List<TransactionDTO> getUserTransactionsHelper(Long userId) {
+        return transactionRepository.findByUserId(userId).stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
+
+    private Long extractUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
             throw new AuthenticationServiceException("User not authenticated");
         }
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getUser().getId();
-
-        return transactionRepository.findByUserId(userId).stream().map(transaction -> {
-            TransactionDTO dto = new TransactionDTO();
-            dto.setId(transaction.getId());
-            dto.setAmount(transaction.getAmount());
-            dto.setTransactionDate(transaction.getTransactionDate());
-            dto.setUserId(userId);
-            return dto;
-        }).toList();
+        return userDetails.getUser().getId();
     }
 
     public CurrencyDTO convert(BigDecimal amount, Currency currency) {
@@ -122,4 +113,18 @@ public class TransactionService {
         CurrencyDTO currencyDTO = new CurrencyDTO(amountUsd, amountInr);
         return currencyDTO;
     }
+
+    private TransactionDTO mapToDTO(Transaction transaction) {
+        TransactionDTO dto = new TransactionDTO();
+        dto.setId(transaction.getId());
+        dto.setAmount(transaction.getAmount());
+        dto.setTransactionDate(transaction.getTransactionDate());
+        dto.setUserId(transaction.getUser().getId());
+        dto.setType(transaction.getType());
+        dto.setCurrency(transaction.getCurrency());
+        dto.setAmountInr(transaction.getAmountInr());
+        dto.setAmountUsd(transaction.getAmountUsd());
+        return dto;
+    }
+
 }
