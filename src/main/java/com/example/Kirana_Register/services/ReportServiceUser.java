@@ -1,58 +1,54 @@
 package com.example.Kirana_Register.services;
 
+import com.example.Kirana_Register.dto.ReportResponseDTO;
 import com.example.Kirana_Register.entities.Transaction;
 import com.example.Kirana_Register.repositories.TransactionRepository;
 import com.example.Kirana_Register.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ReportServiceUser {
+
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public Map<String, Object> generateWeeklyReport() {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long userId = userDetails.getUser().getId();
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime start = now.minusWeeks(1);
-
-        return generateReport(userId, start, now, "weekly");
+    @Cacheable(value = "weeklyReportCache", key = "#userId + '_' + #start.toString() + '_' + #end.toString()")
+    public ReportResponseDTO generateWeeklyReportForUser(Long userId, LocalDateTime start, LocalDateTime end) {
+        return generateReport(userId, start, end, "WEEKLY");
     }
 
-    public Map<String, Object> generateMonthlyReport() {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long userId = userDetails.getUser().getId();
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime start = now.with(TemporalAdjusters.firstDayOfMonth());
-
-        return generateReport(userId, start, now, "monthly");
+    @Cacheable(value = "monthlyReportCache", key = "#userId + '_' + #start.toString() + '_' + #end.toString()")
+    public ReportResponseDTO generateMonthlyReportForUser(Long userId, LocalDateTime start, LocalDateTime end) {
+        return generateReport(userId, start, end, "MONTHLY");
     }
 
-    public Map<String, Object> generateYearlyReport() {
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long userId = userDetails.getUser().getId();
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime start = now.with(TemporalAdjusters.firstDayOfYear());
-
-        return generateReport(userId, start, now, "yearly");
+    @Cacheable(value = "yearlyReportCache", key = "#userId + '_' + #start.toString() + '_' + #end.toString()")
+    public ReportResponseDTO generateYearlyReportForUser(Long userId, LocalDateTime start, LocalDateTime end) {
+        return generateReport(userId, start, end, "YEARLY");
     }
 
-    private Map<String, Object> generateReport(Long userId, LocalDateTime start, LocalDateTime end, String reportType) {
+    private Long getCurrentUserId() {
+        CustomUserDetails userDetails = (CustomUserDetails)
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userDetails.getUser().getId();
+    }
+
+    private ReportResponseDTO generateReport(Long userId, LocalDateTime start, LocalDateTime end, String reportType) {
         if (userId == null) {
             throw new IllegalArgumentException("User ID cannot be null");
         }
         if (start == null || end == null || start.isAfter(end)) {
-            throw new IllegalArgumentException("Invalid date range: start and end dates must be non-null and start must be before end");
+            throw new IllegalArgumentException("Invalid date range: start must be before end");
         }
+
         List<Transaction> records = transactionRepository.findByUser_IdAndTransactionDateBetween(userId, start, end);
 
         BigDecimal totalCreditUsd = BigDecimal.ZERO;
@@ -73,14 +69,13 @@ public class ReportServiceUser {
         BigDecimal netFlowUsd = totalCreditUsd.subtract(totalDebitUsd);
         BigDecimal netFlowInr = totalCreditInr.subtract(totalDebitInr);
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("reportType", reportType);
-        result.put("totalCredits", Map.of("USD", totalCreditUsd, "INR", totalCreditInr));
-        result.put("totalDebits", Map.of("USD", totalDebitUsd, "INR", totalDebitInr));
-        result.put("netFlow", Map.of("USD", netFlowUsd, "INR", netFlowInr));
-        result.put("startDate", start);
-        result.put("endDate", end);
-
-        return result;
+        return new ReportResponseDTO(
+                reportType,
+                new ReportResponseDTO.CurrencyAmounts(totalCreditUsd, totalCreditInr),
+                new ReportResponseDTO.CurrencyAmounts(totalDebitUsd, totalDebitInr),
+                new ReportResponseDTO.CurrencyAmounts(netFlowUsd, netFlowInr),
+                start,
+                end
+        );
     }
 }

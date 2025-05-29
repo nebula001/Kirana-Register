@@ -10,14 +10,9 @@ import com.example.Kirana_Register.entities.Transaction;
 import com.example.Kirana_Register.entities.Users;
 import com.example.Kirana_Register.repositories.TransactionRepository;
 import com.example.Kirana_Register.repositories.UserRepository;
-import com.example.Kirana_Register.security.CustomUserDetails;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -37,22 +32,13 @@ public class TransactionService {
         this.currencyConversionService = currencyConversionService;
     }
 
-    public TransactionDTO createTransaction(TransactionDTO transactionDTO) {
+    // Cache eviction happens when a new transaction is created
+    @CacheEvict(value = "userTransactions", key = "#userId")
+    public TransactionDTO createTransaction(TransactionDTO transactionDTO, Long userId) {
         if (transactionDTO == null) {
             throw new IllegalArgumentException("Transaction request cannot be null");
         }
-        Long userId = extractUserId();
-        return createTransactionHelper(transactionDTO, userId);
-    }
 
-    public List<TransactionDTO> getUserTransactions() {
-        Long userId = extractUserId();
-        return getUserTransactionsHelper(userId);
-    }
-
-
-    @CacheEvict(value = "transactions", key = "#userId")
-    public TransactionDTO createTransactionHelper(TransactionDTO transactionDTO, Long userId) {
         Users user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
 
@@ -75,20 +61,12 @@ public class TransactionService {
         }
     }
 
-    @Cacheable(value = "transactions", key = "#userId")
-    public List<TransactionDTO> getUserTransactionsHelper(Long userId) {
+    // Cache the user transactions list
+    @Cacheable(value = "userTransactions", key = "#userId")
+    public List<TransactionDTO> getUserTransactions(Long userId) {
         return transactionRepository.findByUserId(userId).stream()
                 .map(this::mapToDTO)
                 .toList();
-    }
-
-    private Long extractUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
-            throw new AuthenticationServiceException("User not authenticated");
-        }
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        return userDetails.getUser().getId();
     }
 
     public CurrencyDTO convert(BigDecimal amount, Currency currency) {
@@ -110,8 +88,7 @@ public class TransactionService {
         } else {
             throw new IllegalArgumentException("Unsupported currency: " + currency);
         }
-        CurrencyDTO currencyDTO = new CurrencyDTO(amountUsd, amountInr);
-        return currencyDTO;
+        return new CurrencyDTO(amountUsd, amountInr);
     }
 
     private TransactionDTO mapToDTO(Transaction transaction) {
@@ -126,5 +103,4 @@ public class TransactionService {
         dto.setAmountUsd(transaction.getAmountUsd());
         return dto;
     }
-
 }
