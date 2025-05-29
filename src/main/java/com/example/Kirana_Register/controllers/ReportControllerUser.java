@@ -25,7 +25,6 @@ public class ReportControllerUser {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.minusWeeks(1);
 
-        // ✅ Direct call to cached method from external class
         return reportService.generateWeeklyReportForUser(userId, start, now);
     }
 
@@ -35,7 +34,6 @@ public class ReportControllerUser {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.with(TemporalAdjusters.firstDayOfMonth());
 
-        // ✅ Direct call to cached method from external class
         return reportService.generateMonthlyReportForUser(userId, start, now);
     }
 
@@ -45,7 +43,6 @@ public class ReportControllerUser {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.with(TemporalAdjusters.firstDayOfYear());
 
-        // ✅ Direct call to cached method from external class
         return reportService.generateYearlyReportForUser(userId, start, now);
     }
 

@@ -4,7 +4,7 @@ import com.example.Kirana_Register.configs.JwtTokenProvider;
 import com.example.Kirana_Register.dto.LoginRequestDTO;
 import com.example.Kirana_Register.dto.LoginResponseDTO;
 import com.example.Kirana_Register.security.CustomUserDetails;
-import org.apache.coyote.BadRequestException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
@@ -23,6 +24,7 @@ public class AuthService {
 
     public LoginResponseDTO login(LoginRequestDTO requestDTO) {
         if (requestDTO == null) {
+            log.warn("Empty Request Body");
             throw new IllegalArgumentException("Login request cannot be null");
         }
         Authentication authentication = authenticationManager.authenticate(

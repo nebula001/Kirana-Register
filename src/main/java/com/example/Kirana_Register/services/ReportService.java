@@ -3,6 +3,7 @@ package com.example.Kirana_Register.services;
 import com.example.Kirana_Register.dto.ReportResponseDTO;
 import com.example.Kirana_Register.entities.Transaction;
 import com.example.Kirana_Register.repositories.TransactionRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ReportService {
     @Autowired
     private TransactionRepository transactionRepository;
@@ -43,6 +45,7 @@ public class ReportService {
 
     private ReportResponseDTO generateReport(LocalDateTime start, LocalDateTime end, String reportType) {
         if (start == null || end == null || start.isAfter(end)) {
+            log.warn("Invalid start and end date provided");
             throw new IllegalArgumentException("Invalid date range: start and end dates must be non-null and start must be before end");
         }
 

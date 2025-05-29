@@ -5,12 +5,13 @@ import com.example.Kirana_Register.dto.RegisterRequestDTO;
 import com.example.Kirana_Register.dto.RegisterResponseDTO;
 import com.example.Kirana_Register.entities.Users;
 import com.example.Kirana_Register.repositories.UserRepository;
-import org.apache.coyote.BadRequestException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -22,13 +23,16 @@ public class UserService {
 
     public RegisterResponseDTO registerUser(RegisterRequestDTO requestDTO) {
         if (requestDTO == null) {
+            log.info("Empty request body provided");
             throw new IllegalArgumentException("Registration request cannot be null");
         }
 
         if (userRepository.existsByEmail(requestDTO.getEmail())) {
+            log.info("Duplicate email provided");
             throw new DuplicateResourceException("Email already exists");
         }
         if (userRepository.existsByUsername(requestDTO.getUsername())) {
+            log.info("Duplicate user name provided");
             throw new DuplicateResourceException("Username already exists");
         }
 
@@ -48,6 +52,7 @@ public class UserService {
 
             return responseDTO;
         } catch (DataIntegrityViolationException e) {
+            log.warn("Invalid user data provided");
             throw new DuplicateResourceException("Database constraint violation: email already exists");
         }
     }

@@ -7,7 +7,7 @@ import com.example.Kirana_Register.dto.RegisterResponseDTO;
 import com.example.Kirana_Register.services.AuthService;
 import com.example.Kirana_Register.services.UserService;
 import jakarta.validation.Valid;
-import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +26,9 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<RegisterResponseDTO> register(@Valid @RequestBody RegisterRequestDTO requestDTO) {
         RegisterResponseDTO responseDTO = userService.registerUser(requestDTO);
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(responseDTO);
     }
 
     @PostMapping("/login")

@@ -66,6 +66,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -78,6 +79,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @Component
+@Slf4j
 public class RateLimitFilter extends OncePerRequestFilter {
 
     private static final int MAX_REQUESTS = 10;
@@ -112,7 +114,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
         if (userId != null) {
             return "user:" + userId;
         }
-        System.out.println("Still not working");
+        log.info("Checking the user id for rate limit key");
         return "ip:" + request.getRemoteAddr();
     }
 

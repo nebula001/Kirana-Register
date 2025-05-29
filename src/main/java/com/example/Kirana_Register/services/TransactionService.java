@@ -10,6 +10,7 @@ import com.example.Kirana_Register.entities.Transaction;
 import com.example.Kirana_Register.entities.Users;
 import com.example.Kirana_Register.repositories.TransactionRepository;
 import com.example.Kirana_Register.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Slf4j
 public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
@@ -36,6 +38,7 @@ public class TransactionService {
     @CacheEvict(value = "userTransactions", key = "#userId")
     public TransactionDTO createTransaction(TransactionDTO transactionDTO, Long userId) {
         if (transactionDTO == null) {
+            log.warn("No User Id provided");
             throw new IllegalArgumentException("Transaction request cannot be null");
         }
 
@@ -57,6 +60,7 @@ public class TransactionService {
             Transaction savedTransaction = transactionRepository.save(transaction);
             return mapToDTO(savedTransaction);
         } catch (DataIntegrityViolationException e) {
+            log.warn("Invalid transaction data provided");
             throw new DatabaseValidationException("Invalid transaction data: constraint violation");
         }
     }
@@ -71,11 +75,13 @@ public class TransactionService {
 
     public CurrencyDTO convert(BigDecimal amount, Currency currency) {
         if (amount == null || currency == null) {
+            log.warn("Both amount and currency required");
             throw new IllegalArgumentException("Amount and currency cannot be null");
         }
         ExchangeApiDTO response = currencyConversionService.getExchangeRates();
         Double factor = response.getInrRate();
         if (factor == null) {
+            log.warn("INR Conversion rate required");
             throw new ResourceNotFoundException("INR exchange rate not available");
         }
         BigDecimal amountUsd = null, amountInr = null;
@@ -86,6 +92,7 @@ public class TransactionService {
             amountInr = amount;
             amountUsd = amount.divide(BigDecimal.valueOf(factor), 2, RoundingMode.HALF_UP);
         } else {
+            log.warn("Currency other than INR or USD provided");
             throw new IllegalArgumentException("Unsupported currency: " + currency);
         }
         return new CurrencyDTO(amountUsd, amountInr);

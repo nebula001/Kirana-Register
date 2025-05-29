@@ -3,18 +3,17 @@ package com.example.Kirana_Register.services;
 import com.example.Kirana_Register.dto.ReportResponseDTO;
 import com.example.Kirana_Register.entities.Transaction;
 import com.example.Kirana_Register.repositories.TransactionRepository;
-import com.example.Kirana_Register.security.CustomUserDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ReportServiceUser {
 
     @Autowired
@@ -35,17 +34,13 @@ public class ReportServiceUser {
         return generateReport(userId, start, end, "YEARLY");
     }
 
-    private Long getCurrentUserId() {
-        CustomUserDetails userDetails = (CustomUserDetails)
-                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userDetails.getUser().getId();
-    }
-
     private ReportResponseDTO generateReport(Long userId, LocalDateTime start, LocalDateTime end, String reportType) {
         if (userId == null) {
+            log.warn("No user Id Provided");
             throw new IllegalArgumentException("User ID cannot be null");
         }
         if (start == null || end == null || start.isAfter(end)) {
+            log.warn("Invalid date range provided");
             throw new IllegalArgumentException("Invalid date range: start must be before end");
         }
 
