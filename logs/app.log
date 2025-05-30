@@ -2856,3 +2856,269 @@
 2025-05-30 16:59:44.573 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-05-30 16:59:44.581 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2025-05-30 16:59:44.599 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-05-30 17:25:18.641 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2025-05-30 17:25:18.708 [main] INFO  c.e.K.KiranaRegisterApplication - Starting KiranaRegisterApplication using Java 22.0.1 with PID 9128 (D:\Spring Boot\Kirana-Register\target\classes started by aamee in D:\Spring Boot\Kirana-Register)
+2025-05-30 17:25:18.882 [main] DEBUG c.e.K.KiranaRegisterApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-05-30 17:25:18.884 [main] INFO  c.e.K.KiranaRegisterApplication - No active profile set, falling back to 1 default profile: "default"
+2025-05-30 17:25:21.000 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-05-30 17:25:21.003 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-30 17:25:21.216 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 194 ms. Found 2 JPA repository interfaces.
+2025-05-30 17:25:21.254 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-05-30 17:25:21.256 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-05-30 17:25:21.283 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.example.Kirana_Register.repositories.TransactionRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-05-30 17:25:21.284 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.example.Kirana_Register.repositories.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-05-30 17:25:21.284 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-05-30 17:25:22.898 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-05-30 17:25:22.916 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-05-30 17:25:22.918 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-05-30 17:25:22.919 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-30 17:25:23.042 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-05-30 17:25:23.042 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 4080 ms
+2025-05-30 17:25:23.481 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-30 17:25:23.569 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-05-30 17:25:23.622 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-05-30 17:25:24.077 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-30 17:25:24.103 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-05-30 17:25:24.438 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@45cf0c15
+2025-05-30 17:25:24.439 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-05-30 17:25:24.543 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-30 17:25:25.731 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-30 17:25:25.909 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-30 17:25:26.797 [main] DEBUG c.e.K.c.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-05-30 17:25:26.800 [main] DEBUG c.e.K.configs.RateLimitFilter - Filter 'rateLimitFilter' configured for use
+2025-05-30 17:25:26.934 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-05-30 17:25:27.800 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-30 17:25:28.449 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-05-30 17:25:29.860 [main] INFO  o.a.k.c.admin.AdminClientConfig - AdminClientConfig values: 
+	auto.include.jmx.reporter = true
+	bootstrap.controllers = []
+	bootstrap.servers = [localhost:9092]
+	client.dns.lookup = use_all_dns_ips
+	client.id = Kirana-Register-admin-0
+	connections.max.idle.ms = 300000
+	default.api.timeout.ms = 60000
+	enable.metrics.push = true
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+
+2025-05-30 17:25:30.109 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka version: 3.9.1
+2025-05-30 17:25:30.110 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka commitId: f745dfdcee2b9851
+2025-05-30 17:25:30.110 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka startTimeMs: 1748606130107
+2025-05-30 17:25:30.974 [kafka-admin-client-thread | Kirana-Register-admin-0] INFO  o.a.kafka.common.utils.AppInfoParser - App info kafka.admin.client for Kirana-Register-admin-0 unregistered
+2025-05-30 17:25:30.979 [kafka-admin-client-thread | Kirana-Register-admin-0] INFO  o.a.kafka.common.metrics.Metrics - Metrics scheduler closed
+2025-05-30 17:25:30.980 [kafka-admin-client-thread | Kirana-Register-admin-0] INFO  o.a.kafka.common.metrics.Metrics - Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2025-05-30 17:25:30.981 [kafka-admin-client-thread | Kirana-Register-admin-0] INFO  o.a.kafka.common.metrics.Metrics - Metrics reporters closed
+2025-05-30 17:25:30.986 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-05-30 17:25:30.999 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-05-30 17:25:31.030 [main] INFO  o.a.k.c.consumer.ConsumerConfig - ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = earliest
+	bootstrap.servers = [localhost:9092]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-report-group-1
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = report-group
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.springframework.kafka.support.serializer.JsonDeserializer
+
+2025-05-30 17:25:31.077 [main] INFO  o.a.k.c.t.i.KafkaMetricsCollector - initializing Kafka metrics collector
+2025-05-30 17:25:31.128 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka version: 3.9.1
+2025-05-30 17:25:31.128 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka commitId: f745dfdcee2b9851
+2025-05-30 17:25:31.128 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka startTimeMs: 1748606131128
+2025-05-30 17:25:31.140 [main] INFO  o.a.k.c.c.i.ClassicKafkaConsumer - [Consumer clientId=consumer-report-group-1, groupId=report-group] Subscribed to topic(s): string-reports-topic
+2025-05-30 17:25:31.169 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  org.apache.kafka.clients.Metadata - [Consumer clientId=consumer-report-group-1, groupId=report-group] Cluster ID: MQ42AB2ATfeahPOqF85q3w
+2025-05-30 17:25:31.174 [main] INFO  c.e.K.KiranaRegisterApplication - Started KiranaRegisterApplication in 13.075 seconds (process running for 14.581)
+2025-05-30 17:25:31.181 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-report-group-1, groupId=report-group] Discovered group coordinator host.docker.internal:9092 (id: 2147483647 rack: null)
+2025-05-30 17:25:31.188 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-report-group-1, groupId=report-group] (Re-)joining group
+2025-05-30 17:25:31.569 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-report-group-1, groupId=report-group] Request joining group due to: need to re-join with the given member-id: consumer-report-group-1-479652e7-13f6-4958-88ed-42a5a1ec85fe
+2025-05-30 17:25:31.570 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-report-group-1, groupId=report-group] (Re-)joining group
+2025-05-30 17:25:31.596 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-report-group-1, groupId=report-group] Successfully joined group with generation Generation{generationId=163, memberId='consumer-report-group-1-479652e7-13f6-4958-88ed-42a5a1ec85fe', protocol='range'}
+2025-05-30 17:25:31.610 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-report-group-1, groupId=report-group] Finished assignment for group at generation 163: {consumer-report-group-1-479652e7-13f6-4958-88ed-42a5a1ec85fe=Assignment(partitions=[string-reports-topic-0])}
+2025-05-30 17:25:31.675 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-report-group-1, groupId=report-group] Successfully synced group in generation Generation{generationId=163, memberId='consumer-report-group-1-479652e7-13f6-4958-88ed-42a5a1ec85fe', protocol='range'}
+2025-05-30 17:25:31.676 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-report-group-1, groupId=report-group] Notifying assignor about the new Assignment(partitions=[string-reports-topic-0])
+2025-05-30 17:25:31.680 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-report-group-1, groupId=report-group] Adding newly assigned partitions: string-reports-topic-0
+2025-05-30 17:25:31.706 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.internals.ConsumerUtils - Setting offset for partition string-reports-topic-0 to the committed offset FetchPosition{offset=15, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[host.docker.internal:9092 (id: 0 rack: null)], epoch=0}}
+2025-05-30 17:25:31.708 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - report-group: partitions assigned: [string-reports-topic-0]
+2025-05-30 17:25:41.699 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-30 17:25:41.700 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-05-30 17:25:41.706 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 4 ms
+2025-05-30 17:25:41.743 [http-nio-8080-exec-2] INFO  c.e.K.configs.RateLimitFilter - Checking the user id for rate limit key
+2025-05-30 17:25:48.710 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerRebalanceListenerInvoker - [Consumer clientId=consumer-report-group-1, groupId=report-group] Revoke previously assigned partitions string-reports-topic-0
+2025-05-30 17:25:48.712 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - report-group: partitions revoked: [string-reports-topic-0]
+2025-05-30 17:25:48.713 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-report-group-1, groupId=report-group] Member consumer-report-group-1-479652e7-13f6-4958-88ed-42a5a1ec85fe sending LeaveGroup request to coordinator host.docker.internal:9092 (id: 2147483647 rack: null) due to the consumer unsubscribed from all topics
+2025-05-30 17:25:48.714 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-report-group-1, groupId=report-group] Resetting generation and member id due to: consumer pro-actively leaving the group
+2025-05-30 17:25:48.714 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-report-group-1, groupId=report-group] Request joining group due to: consumer pro-actively leaving the group
+2025-05-30 17:25:48.714 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ClassicKafkaConsumer - [Consumer clientId=consumer-report-group-1, groupId=report-group] Unsubscribed all topics or patterns and assigned partitions
+2025-05-30 17:25:48.717 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-report-group-1, groupId=report-group] Resetting generation and member id due to: consumer pro-actively leaving the group
+2025-05-30 17:25:48.717 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.k.c.c.i.ConsumerCoordinator - [Consumer clientId=consumer-report-group-1, groupId=report-group] Request joining group due to: consumer pro-actively leaving the group
+2025-05-30 17:25:49.202 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.kafka.common.metrics.Metrics - Metrics scheduler closed
+2025-05-30 17:25:49.202 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.kafka.common.metrics.Metrics - Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2025-05-30 17:25:49.203 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.kafka.common.metrics.Metrics - Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+2025-05-30 17:25:49.203 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.kafka.common.metrics.Metrics - Metrics reporters closed
+2025-05-30 17:25:49.210 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.a.kafka.common.utils.AppInfoParser - App info kafka.consumer for consumer-report-group-1 unregistered
+2025-05-30 17:25:49.211 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - report-group: Consumer stopped
+2025-05-30 17:25:49.213 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-30 17:25:49.229 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-05-30 17:25:49.252 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-30 17:25:49.256 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-05-30 17:25:49.266 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
