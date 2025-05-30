@@ -19,6 +19,7 @@ public class ReportControllerUser {
     @Autowired
     private ReportServiceUser reportService;
 
+
     @GetMapping("/weekly")
     public ReportResponseDTO generateWeeklyReport() {
         Long userId = getCurrentUserId();
@@ -28,6 +29,7 @@ public class ReportControllerUser {
         return reportService.generateWeeklyReportForUser(userId, start, now);
     }
 
+
     @GetMapping("/monthly")
     public ReportResponseDTO generateMonthlyReport() {
         Long userId = getCurrentUserId();
@@ -36,6 +38,7 @@ public class ReportControllerUser {
 
         return reportService.generateMonthlyReportForUser(userId, start, now);
     }
+
 
     @GetMapping("/yearly")
     public ReportResponseDTO generateYearlyReport() {

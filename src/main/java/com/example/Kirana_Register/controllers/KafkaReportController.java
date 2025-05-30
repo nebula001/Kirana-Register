@@ -12,17 +12,20 @@ public class KafkaReportController {
     @Autowired
     private ReportServiceKafka reportServiceKafka;
 
+
     @PostMapping("/weekly")
     public String generateWeeklyReport() {
         reportServiceKafka.generateWeeklyReport();
         return "Weekly report sent to Kafka";
     }
 
+
     @PostMapping("/monthly")
     public String generateMonthlyReport() {
         reportServiceKafka.generateMonthlyReport();
         return "Monthly report sent to Kafka";
     }
+
 
     @PostMapping("/yearly")
     public String generateYearlyReport() {

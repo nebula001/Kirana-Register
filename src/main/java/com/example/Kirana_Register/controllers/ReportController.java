@@ -14,17 +14,20 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
+
     @GetMapping("/weekly")
     public ResponseEntity<ReportResponseDTO> getWeeklyReport() {
         ReportResponseDTO report = reportService.generateWeeklyReport();
         return ResponseEntity.ok(report);
     }
 
+
     @GetMapping("/monthly")
     public ResponseEntity<ReportResponseDTO> getMonthlyReport() {
         ReportResponseDTO report = reportService.generateMonthlyReport();
         return ResponseEntity.ok(report);
     }
+
 
     @GetMapping("/yearly")
     public ResponseEntity<ReportResponseDTO> getYearlyReport() {

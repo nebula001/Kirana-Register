@@ -22,6 +22,7 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
+
     @PostMapping
     public ResponseEntity<TransactionDTO> createTransaction(@Valid @RequestBody TransactionDTO transactionDTO) {
         Long userId = extractUserId();
@@ -30,6 +31,7 @@ public class TransactionController {
                 .status(HttpStatus.CREATED)
                 .body(responseDTO);
     }
+
 
     @GetMapping
     public ResponseEntity<List<TransactionDTO>> getUserTransactions() {

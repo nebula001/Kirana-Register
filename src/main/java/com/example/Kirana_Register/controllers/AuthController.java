@@ -41,4 +41,9 @@ public class AuthController {
     public ResponseEntity<String> logout() {
         return ResponseEntity.ok(authService.logout());
     }
+
+    @GetMapping("/health-check")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("Health check passed!");
+    }
 }
